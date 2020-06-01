@@ -10,17 +10,29 @@ mongoose.connect(url)
 
             console.log('Successfully connected to Server')
 
-            Dish({
-                name: 'Palak Paneer',
+            Dish.create({
+                name: 'Palakk Paneer',
                 description: 'Very Tasty'
-            }).save()
-                .then((dish)=>{
+            }).then((dish)=>{
+
                     console.log(dish)
 
-                    return Dish.find({})
+                    return Dish.findByIdAndUpdate(dish._id,{
+                        $set:{ description:'Updated Text' }
+                    },
+                        {
+                            new: true //return updated dish
+                        }
+                    )
                 })
-                .then(dishes=>{
-                    console.log(dishes)
+                .then(dish=>{
+                    console.log(dish)
+
+                    return Dish.findByIdAndUpdate(dish._id,
+                        {
+                            $push :{ commentt: {rating:5,author:'arsh',coment:'good'}}
+                        }
+                        )
 
                 })
                 .then(()=>{
